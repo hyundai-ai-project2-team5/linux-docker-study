@@ -22,9 +22,9 @@ exclude:
 # 댓글(giscus) 설정: 저장소를 만든 뒤 https://giscus.app 에서 값을 받아 채워요 (guide.md 참고)
 giscus:
   repo: "hyundai-ai-project2-team5/linux-docker-study"
-  repo_id: ""
+  repo_id: "R_kgDOVzwAmQ"
   category: "Comments"
-  category_id: ""
+  category_id: "DIC_kwDOVzwAmc4DLdrp"
 
 defaults:
   - scope:
