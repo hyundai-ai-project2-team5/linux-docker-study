@@ -1,0 +1,22 @@
+<hr>
+<h2 id="comments">댓글</h2>
+{% if site.giscus.repo_id != "" and site.giscus.category_id != "" %}
+<p>질문에 대한 답은 이 회차 주도자 두 명이 다음 회차 전까지 댓글로 달아요. 댓글을 쓰려면 GitHub에 로그인해요.</p>
+<script src="https://giscus.app/client.js"
+        data-repo="{{ site.giscus.repo }}"
+        data-repo-id="{{ site.giscus.repo_id }}"
+        data-category="{{ site.giscus.category }}"
+        data-category-id="{{ site.giscus.category_id }}"
+        data-mapping="pathname"
+        data-strict="1"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang="ko"
+        crossorigin="anonymous"
+        async>
+</script>
+{% else %}
+<p><em>댓글 설정 전이에요. <code>_config.yml</code>의 <code>giscus</code> 값을 채우면 여기에 댓글창이 생겨요.</em></p>
+{% endif %}

@@ -1,0 +1,45 @@
+title: 리눅스·도커 스터디
+description: 프로젝트 II 팀 · 2026.11.24 ~ 12.22 · 화·목 18:00
+lang: ko-KR
+
+# GitHub Pages가 그대로 빌드해요 (설정 > Pages > Deploy from a branch > main / root)
+remote_theme: just-the-docs/just-the-docs@v0.10.1
+plugins:
+  - jekyll-remote-theme
+
+search_enabled: true
+heading_anchors: true
+back_to_top: true
+back_to_top_text: "맨 위로"
+footer_content: "리눅스·도커 스터디 · 프로젝트 II 5팀"
+aux_links:
+  "GitHub 저장소":
+    - "https://github.com/hyundai-ai-project2-team5/linux-docker-study"
+
+exclude:
+  - README.md
+
+# 댓글(giscus) 설정: 저장소를 만든 뒤 https://giscus.app 에서 값을 받아 채워요 (guide.md 참고)
+giscus:
+  repo: "hyundai-ai-project2-team5/linux-docker-study"
+  repo_id: ""
+  category: "Comments"
+  category_id: ""
+
+defaults:
+  - scope:
+      path: "notes"
+    values:
+      layout: note
+      nav_exclude: true
+  - scope:
+      path: "quiz"
+    values:
+      layout: quiz
+      nav_exclude: true
+      search_exclude: true
+  - scope:
+      path: "sessions"
+    values:
+      layout: note
+      parent: 회차별 자료

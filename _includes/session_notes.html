@@ -1,0 +1,11 @@
+{% assign dir = "/notes/" | append: include.n | append: "/" %}
+{% assign notes = site.pages | where: "dir", dir | sort: "path" %}
+{% if notes.size > 0 %}
+<ul>
+{% for p in notes %}<li><a href="{{ p.url | relative_url }}">{{ p.title | default: p.name }}</a></li>
+{% endfor %}
+</ul>
+<p>{{ notes.size }}개 올라옴</p>
+{% else %}
+<p><em>아직 올라온 글이 없어요. <code>notes/{{ include.n }}/내아이디(소문자).md</code>로 올려요 (<a href="{{ '/guide.html' | relative_url }}">쓰는 법</a>).</em></p>
+{% endif %}
