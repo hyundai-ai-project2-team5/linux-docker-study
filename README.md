@@ -1,16 +1,16 @@
-# 리눅스·도커 스터디
+# Linux & Docker Study
 
-프로젝트 II 팀 6명의 리눅스·도커 스터디 사이트 저장소예요. GitHub Pages로 바로 배포돼요.
+프로젝트 II 팀 6명의 Linux & Docker Study 사이트 저장소예요. GitHub Pages로 바로 배포돼요.
 
 - 사이트: https://hyundai-ai-project2-team5.github.io/linux-docker-study/ (Pages를 켠 뒤)
-- 처음이면 사이트의 **쓰는 법** 페이지를 보세요.
+- 작성 방법은 팀 Notion 페이지에 있어요 (사이트 규칙 페이지 맨 아래 링크).
 
 | 폴더 | 무엇 | 누가 |
 | --- | --- | --- |
 | `notes/회차/아이디.md` | 개인 정리 글과 질문 | 모두 (자기 파일만) |
 | `sessions/회차.md` | 회차 페이지: 발표 자료, 실습 | 그 회차 주도자 |
 | `quiz/회차.md` | 퀴즈 10문항 | 그 회차 주도자 |
-| `index.md` `rules.md` `guide.md` | 일정, 규칙, 쓰는 법 | 팀장 |
+| `index.md` `rules.md` | 일정, 규칙 | 팀장 |
 | `_config.yml` `_layouts/` `_includes/` `assets/` | 사이트 설정 | 팀장 (건드리지 않기) |
 | `_sass/` | 윈도우 터미널 테마: 색(`color_schemes/terminal.scss`), 글꼴(`custom/setup.scss`), 꾸미기(`custom/custom.scss`) | 팀장 |
 
@@ -29,9 +29,13 @@
 
 ## 로컬에서 미리 보기 (선택)
 
-GitHub Pages와 같은 빌더로 확인할 수 있어요 (Docker 필요).
+GitHub Pages와 같은 빌더로 내 PC에서 사이트를 띄워요. 파일을 저장하면 다시 빌드되고 브라우저가 저절로 새로고침돼요. Docker Desktop이 켜져 있어야 해요.
 
 ```powershell
-docker run --rm -v "${PWD}:/src:ro" -e PAGES_REPO_NWO=hyundai-ai-project2-team5/linux-docker-study `
-  --entrypoint bash ghcr.io/actions/jekyll-build-pages:v1.0.13 -c "github-pages build --source /src --destination /tmp/site"
+docker run --rm -it --name study-preview -p 4000:4000 -p 35729:35729 -v "${PWD}:/src:ro" -e PAGES_REPO_NWO=hyundai-ai-project2-team5/linux-docker-study --entrypoint ruby ghcr.io/actions/jekyll-build-pages:v1.0.13 -e 'require %q(github-pages); ARGV.replace(%w(serve --source /src --destination /tmp/site --host 0.0.0.0 --baseurl /linux-docker-study --livereload --force_polling)); load Gem.bin_path(%q(jekyll), %q(jekyll))'
 ```
+
+- 저장소 폴더에서 실행하고, `Server running...`이 나오면 http://localhost:4000/linux-docker-study/ 을 열어요.
+- 끌 때는 그 터미널에서 Ctrl+C를 눌러요.
+- `_config.yml`을 고쳤을 때만 껐다가 다시 실행해요. 나머지 파일은 저장만 하면 돼요.
+- 댓글창은 실제 사이트와 연결돼 있으니 미리 보기에서 테스트 댓글은 달지 않아요.
