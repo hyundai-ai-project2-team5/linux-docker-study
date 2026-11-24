@@ -1,0 +1,25 @@
+{%- comment -%} 회차 글 목록 (schedule.md에서 씀). 글 정보는 sessions/NN.md의 front matter에서 가져와요. {%- endcomment -%}
+{%- assign posts = site.pages | where: "dir", "/sessions/" | sort: "nav_order" -%}
+<ul class="post-list">
+  {%- for p in posts %}
+  {%- assign field_name = "Linux" -%}
+  {%- if p.field == "docker" -%}{%- assign field_name = "Docker" -%}{%- endif %}
+  <li class="post-card">
+    <p class="post-category">
+      <span class="post-chip post-chip-{{ p.field }}">{{ field_name }}</span>
+      <span class="post-chip">{{ p.week }}주차</span>
+      <span class="post-no">[{{ p.num }}]</span>
+    </p>
+    <a class="post-card-title" href="{{ p.url | relative_url }}">{{ p.heading }}</a>
+    <p class="post-card-summary">{{ p.summary }}</p>
+    <p class="post-meta">
+      <span class="post-authors">
+        {%- for a in p.authors -%}
+        <span class="post-author"><img src="https://github.com/{{ a }}.png?size=48" alt="" width="20" height="20" loading="lazy">{{ a }}</span>
+        {%- endfor -%}
+      </span>
+      <span class="post-date">{{ p.day }}</span>
+    </p>
+  </li>
+  {%- endfor %}
+</ul>

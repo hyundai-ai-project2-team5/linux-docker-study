@@ -1,3 +1,8 @@
 // 윈도우 터미널 기본 글꼴 Cascadia Mono, 한글은 D2Coding (_includes/head_custom.html에서 불러와요)
 $body-font-family: "Cascadia Mono", "D2Coding", "Malgun Gothic", "Apple SD Gothic Neo", monospace;
 $mono-font-family: "Cascadia Mono", "D2Coding", consolas, monospace;
+
+// 너비 (테마 기본값: 사이드바 16.5rem, 중간 화면 사이드바 15.5rem, 본문 50rem)
+$nav-width: 19rem;
+$nav-width-md: 17.5rem;
+$content-width: 64rem;

@@ -1,0 +1,77 @@
+---
+layout: default
+---
+{%- comment -%}
+  회차 글(sessions/NN.md)을 기술 블로그 글처럼 보여 주는 레이아웃이에요.
+  글 정보(제목, 작성자, 작성일시, 태그, 실습 짝 등)는 각 파일 맨 위 front matter에 적어요.
+{%- endcomment -%}
+{%- assign field_name = "Linux" -%}
+{%- if page.field == "docker" -%}{%- assign field_name = "Docker" -%}{%- endif -%}
+<article class="post">
+  <header class="post-header">
+    <p class="post-category">
+      <span class="post-chip post-chip-{{ page.field }}">{{ field_name }}</span>
+      <span class="post-chip">{{ page.week }}주차</span>
+      <span class="post-no">[{{ page.num }}]</span>
+    </p>
+    <h1 class="post-title" id="{{ page.heading | slugify: 'raw' }}">{{ page.heading }}</h1>
+    <div class="post-meta">
+      <span class="post-authors">
+        {%- for a in page.authors -%}
+        <a class="post-author" href="https://github.com/{{ a }}" target="_blank" rel="noopener noreferrer"><img src="https://github.com/{{ a }}.png?size=48" alt="" width="22" height="22" loading="lazy">{{ a }}</a>
+        {%- endfor -%}
+      </span>
+      <span class="post-date"><span class="post-meta-label">작성</span> {{ page.day }} 13:00</span>
+    </div>
+    {%- if page.tags.size > 0 %}
+    <ul class="post-tags">
+      {%- for t in page.tags %}
+      <li>#{{ t }}</li>
+      {%- endfor %}
+    </ul>
+    {%- endif %}
+  </header>
+
+  <aside class="post-notice" aria-label="스터디 안내">
+    <p class="post-notice-title">📌 스터디 안내</p>
+    <ul>
+      <li><strong>모임</strong> {{ page.day }} 18:00~19:00 · 강의장 라운지 회의실</li>
+      <li><strong>실습 짝</strong> {{ page.pair }}</li>
+      <li><strong>퀴즈</strong> <a href="{{ '/quiz/' | append: page.n | append: '.html' | relative_url }}">[{{ page.num }}] 퀴즈</a> (퀴즈 시간 전에는 열지 않기)</li>
+      <li><strong>마감</strong> 정리 글과 질문: 모임 전날 23시 · 이 글과 퀴즈(주도자): 모임 당일 13시 · 질문 답변: 다음 회차 시작 전</li>
+      {%- if page.memo %}
+      <li><strong>메모</strong> {{ page.memo }}</li>
+      {%- endif %}
+    </ul>
+  </aside>
+
+  <div class="post-body">
+{{ content }}
+  </div>
+
+  <section class="post-related">
+    <h2 id="멤버-정리-글과-질문">멤버 정리 글과 질문</h2>
+    {% include session_notes.html n=page.n %}
+  </section>
+
+  {%- assign posts = site.pages | where: "dir", "/sessions/" | sort: "nav_order" -%}
+  {%- for p in posts -%}
+    {%- if p.url == page.url -%}
+      {%- assign i = forloop.index0 -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- assign prev_i = i | minus: 1 -%}
+  {%- assign next_i = i | plus: 1 -%}
+  <nav class="post-pager" aria-label="이전 글, 다음 글">
+    {%- if i > 0 -%}
+    {%- assign p = posts[prev_i] -%}
+    <a class="post-pager-prev" href="{{ p.url | relative_url }}"><span class="post-pager-label">← 이전 글</span>[{{ p.num }}] {{ p.heading }}</a>
+    {%- else -%}<span></span>{%- endif -%}
+    {%- if next_i < posts.size -%}
+    {%- assign p = posts[next_i] -%}
+    <a class="post-pager-next" href="{{ p.url | relative_url }}"><span class="post-pager-label">다음 글 →</span>[{{ p.num }}] {{ p.heading }}</a>
+    {%- endif -%}
+  </nav>
+</article>
+
+{% include giscus.html %}

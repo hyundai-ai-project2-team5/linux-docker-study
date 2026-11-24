@@ -14,4 +14,9 @@
     unicode-range: U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF;
   }
 </style>
+<!-- 사이드바 회차 메뉴에 Linux/Docker 칩을 붙일 때 쓰는 분야 정보 (sessions/NN.md의 field) -->
+{%- assign study_posts = site.pages | where: "dir", "/sessions/" %}
+<script>
+  window.studyFields = { {%- for p in study_posts %}"{{ p.url | relative_url }}": "{{ p.field }}"{% unless forloop.last %}, {% endunless %}{%- endfor %} };
+</script>
 <script src="{{ '/assets/js/terminal.js' | relative_url }}" defer></script>
