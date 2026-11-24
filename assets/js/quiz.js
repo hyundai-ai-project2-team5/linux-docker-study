@@ -1,5 +1,5 @@
 // 퀴즈 페이지(quiz/*.md)의 마크다운을 풀 수 있는 퀴즈로 바꿔요.
-// 쓰는 법: quiz/_template.md 참고. 문제는 "## 제목", 보기는 "- 목록", 정답 보기 끝에 "(정답)", 해설은 "> 인용".
+// 작성 방법: quiz/_template.md 참고. 문제는 "## 제목", 보기는 "- 목록", 정답 보기 끝에 "(정답)", 해설은 "> 인용".
 (function () {
   var src = document.getElementById('quiz-source');
   var app = document.getElementById('quiz-app');

@@ -1,6 +1,7 @@
-// 본문에서 도커와 관련된 단어와 명령을 파란색(.docker-word, .docker-code)으로 강조해요.
+// 본문에서 리눅스 관련 단어는 초록색(.linux-word), 도커 관련 단어와 명령은 파란색(.docker-word, .docker-code)으로 강조해요.
 (function () {
-  var WORD_PATTERN = /(Dockerfile|Docker|docker|도커|컨테이너|Compose|compose)/g;
+  var WORD_PATTERN = /(Dockerfile|Docker|docker|도커|컨테이너|Compose|compose|Linux|리눅스|Ubuntu|우분투)/g;
+  var LINUX_WORDS = { Linux: true, 리눅스: true, Ubuntu: true, 우분투: true };
   var CODE_PATTERN = /^\s*(docker|Dockerfile|compose\.ya?ml)/;
   var SKIP_TAGS = { SCRIPT: true, STYLE: true, PRE: true, CODE: true, TEXTAREA: true };
 
@@ -15,7 +16,13 @@
   function isSkipped(node, root) {
     var el = node.parentElement;
     while (el && el !== root) {
-      if (SKIP_TAGS[el.tagName] || el.classList.contains('docker-word')) {
+      if (
+        SKIP_TAGS[el.tagName] ||
+        el.classList.contains('docker-word') ||
+        el.classList.contains('linux-word') ||
+        el.classList.contains('post-chip') ||
+        el.classList.contains('post-tags')
+      ) {
         return true;
       }
       el = el.parentElement;
@@ -41,7 +48,7 @@
         }
         if (i % 2 === 1) {
           var span = document.createElement('span');
-          span.className = 'docker-word';
+          span.className = LINUX_WORDS[part] ? 'linux-word' : 'docker-word';
           span.textContent = part;
           frag.appendChild(span);
         } else {
@@ -53,11 +60,14 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    var main = document.querySelector('.main-content');
-    if (!main) {
-      return;
-    }
-    markCode(main);
-    markWords(main);
+    // 본문, 사이드바 메뉴, 글 위쪽 경로(breadcrumb)에 같은 규칙을 적용해요.
+    ['.main-content', '.site-nav', '.breadcrumb-nav'].forEach(function (selector) {
+      var root = document.querySelector(selector);
+      if (!root) {
+        return;
+      }
+      markCode(root);
+      markWords(root);
+    });
   });
 })();

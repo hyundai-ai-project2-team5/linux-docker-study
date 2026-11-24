@@ -1,8 +1,10 @@
 // 윈도우 터미널처럼 보이게 꾸미기 (색 구성은 _sass/color_schemes/terminal.scss)
-$wt-docker-blue: #2496ed; // 도커 로고 파랑, 검은 바탕 대비 6.2:1
+$wt-docker-blue: #2986ff; // Docker Desktop 다크 테마 primary(blue 500)
+$wt-linux-green: #16c60c; // Campbell brightGreen, 검은 바탕 대비 8.5:1
 $wt-comment-green: #6a9955; // VS Code 파이썬 주석색, 검은 바탕 대비 5.9:1
 $wt-gray: #767676; // Campbell brightBlack
 $wt-white: #f2f2f2; // Campbell brightWhite
+$wt-yellow: #f9f1a5; // Campbell brightYellow, 회차 글 안내 상자·카드 강조에만 (링크 글자는 흰색)
 
 ::selection {
   color: #0c0c0c;
@@ -27,6 +29,7 @@ $wt-white: #f2f2f2; // Campbell brightWhite
 
 .team-name {
   font-size: 0.75rem;
+  white-space: nowrap;
   color: $wt-comment-green;
 }
 
@@ -81,7 +84,13 @@ blockquote {
   border-left-color: $wt-gray;
 }
 
-// 도커 관련 강조 (assets/js/terminal.js가 단어에 붙여요, 직접 쓸 때는 <span class="docker">)
+// 리눅스·도커 관련 강조 (assets/js/terminal.js가 단어에 붙여요, 직접 쓸 때는 <span class="linux"> / <span class="docker">)
+.linux,
+.linux-word,
+.main-content a .linux-word {
+  color: $wt-linux-green;
+}
+
 .docker,
 .docker-word,
 code.docker-code,
@@ -89,7 +98,15 @@ code.docker-code,
   color: $wt-docker-blue;
 }
 
-// 사이드바의 도커 회차 (3·4주차 = 6~9회차)
+// 사이드바 회차 메뉴: 리눅스(0~2주차 = 1~5회차)는 초록, 도커(3·4주차 = 6~9회차)는 파랑
+.site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/01.html"],
+.site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/02.html"],
+.site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/03.html"],
+.site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/04.html"],
+.site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/05.html"] {
+  color: $wt-linux-green;
+}
+
 .site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/06.html"],
 .site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/07.html"],
 .site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/08.html"],
@@ -97,9 +114,359 @@ code.docker-code,
   color: $wt-docker-blue;
 }
 
-.site-footer {
-  color: $wt-gray;
+// 사이드바 메뉴의 한글이 단어 중간에서 줄바꿈되지 않게
+.site-nav .nav-list-link {
   word-break: keep-all;
+}
+
+// 사이드바 메뉴 이름 앞에 \를 붙여 폴더 경로처럼 (C:\Linux&Docker\study> 아래 폴더들)
+// \는 메뉴 글자색(회차는 초록·파랑)과 상관없이 흰색
+.site-nav .nav-list-link::before {
+  color: $wt-white;
+  content: "\\";
+}
+
+// 지금 보고 있는 페이지의 메뉴는 회차 색과 상관없이 글자·\ 모두 회색
+.site-nav .nav-list .nav-list-item .nav-list-link.active,
+.site-nav .nav-list .nav-list-item .nav-list-link.active::before,
+.site-nav .nav-list .nav-list-item .nav-list-link.active .linux-word,
+.site-nav .nav-list .nav-list-item .nav-list-link.active .docker-word {
+  color: $wt-gray;
+}
+
+// 오른쪽 위 링크 버튼(팀 GitHub repository)은 노란색, 뒤에 바깥 링크 기호 (_includes/components/aux_nav.html)
+.aux-nav .site-button {
+  color: $wt-yellow;
+}
+
+.aux-nav .site-button svg {
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.25rem;
+}
+
+// 표 안의 한글이 단어 중간에서 줄바꿈되지 않게
+.main-content td {
+  word-break: keep-all;
+}
+
+// 홈 일정표: 회차 열은 숫자 한 글자라 좁게 (index.md 표 아래 {: .session-table})
+.main-content table.session-table th:first-child,
+.main-content table.session-table td:first-child {
+  width: 1%;
+  min-width: 0;
+  padding-right: 0.25rem;
+  padding-left: 0.25rem;
+  text-align: center;
+  white-space: nowrap;
+}
+
+// 홈 일정표: 날짜는 가운데, 범위는 한 줄로
+.main-content table.session-table th:nth-child(2),
+.main-content table.session-table td:nth-child(2) {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.main-content table.session-table td:nth-child(3) {
+  white-space: nowrap;
+}
+
+// 사이드바 하위 메뉴(회차별 자료)를 접지 않고 항상 펼쳐 두기
+.site-nav .nav-list .nav-list-item > .nav-list {
+  display: block;
+}
+
+.site-nav .nav-list .nav-list-item > .nav-list-expander {
+  display: none;
+}
+
+// ── 회차 글: 기술 블로그 글 모양 (_layouts/post.html, _includes/post_list.html) ──
+.post-category {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.6rem;
+  font-size: 0.8rem;
+}
+
+.post-chip {
+  padding: 0.1rem 0.55rem;
+  color: #a8a8a8;
+  border: 1px solid $border-color;
+  border-radius: 999px;
+}
+
+.post-chip-linux {
+  color: $wt-linux-green;
+  border-color: rgba($wt-linux-green, 0.5);
+}
+
+.post-chip-docker {
+  color: $wt-docker-blue;
+  border-color: rgba($wt-docker-blue, 0.5);
+}
+
+.post-no {
+  color: $wt-gray;
+}
+
+.main-content .post-title {
+  margin-top: 0;
+  margin-bottom: 0.8rem;
+  line-height: 1.3;
+  word-break: keep-all;
+}
+
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1.2rem;
+  margin: 0 0 0.8rem;
+  font-size: 0.85rem;
+  color: #a8a8a8;
+}
+
+.post-authors {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.9rem;
+}
+
+.post-author {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: $body-text-color;
+}
+
+.main-content a.post-author {
+  color: $body-text-color;
+  text-decoration: none;
+}
+
+.post-author img {
+  border: 1px solid $border-color;
+  border-radius: 50%;
+}
+
+.post-meta-label {
+  color: $wt-gray;
+}
+
+.main-content ul.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  > li {
+    margin: 0;
+    padding: 0.05rem 0.5rem;
+    font-size: 0.8rem;
+    color: #61d6d6; // Campbell brightCyan
+    background: #161616;
+    border-radius: 4px;
+
+    &::before {
+      content: none;
+    }
+  }
+}
+
+.post-header {
+  padding-bottom: 1.2rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid $border-color;
+}
+
+.post-notice {
+  padding: 0.8rem 1rem;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+  background: #121212;
+  border: 1px solid $border-color;
+  border-left: 3px solid $wt-yellow;
+  border-radius: 4px;
+
+  ul {
+    padding-left: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  li {
+    margin: 0.2rem 0;
+    word-break: keep-all;
+
+    &::before {
+      content: none !important;
+    }
+  }
+
+  strong {
+    display: inline-block;
+    min-width: 4.5rem;
+    color: $wt-white;
+  }
+}
+
+// 안내 상자의 퀴즈 링크: 노란색 + 밑줄로 강조 (_layouts/post.html)
+.main-content .post-notice a.post-quiz-link {
+  color: $wt-yellow;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.post-quiz-note {
+  color: $wt-yellow;
+}
+
+.main-content .post-notice-title {
+  margin: 0 0 0.4rem;
+  font-weight: 700;
+  color: $wt-yellow;
+}
+
+.post-related {
+  padding-top: 1rem;
+  margin-top: 2.5rem;
+  border-top: 1px solid $border-color;
+}
+
+.post-pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin: 2rem 0 1rem;
+
+  a {
+    display: block;
+    padding: 0.7rem 0.9rem;
+    color: $body-text-color;
+    text-decoration: none;
+    word-break: keep-all;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+
+    &:hover {
+      border-color: $wt-yellow;
+    }
+
+    .post-pager-label {
+      display: block;
+      margin-bottom: 0.2rem;
+      font-size: 0.75rem;
+      color: $wt-gray;
+    }
+  }
+
+  .post-pager-next {
+    grid-column: 2;
+    text-align: right;
+  }
+}
+
+// 글 목록 카드 (Linux와 Docker 톺아보기)
+.main-content ul.post-list {
+  padding: 0;
+  list-style: none;
+
+  > li::before {
+    content: none;
+  }
+}
+
+.main-content .post-card {
+  position: relative; // 제목 링크가 카드 전체를 덮도록 (아래 .post-card-title::after)
+  padding: 1rem 1.1rem;
+  margin: 0 0 0.9rem;
+  background: #121212;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+
+  .post-card-title {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: $wt-white;
+    text-decoration: none;
+    word-break: keep-all;
+
+    // 카드 어디를 눌러도 이 글로 이동
+    &::after {
+      position: absolute;
+      inset: 0;
+      content: "";
+      border-radius: 6px;
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
+
+    &:focus-visible::after {
+      outline: 2px solid $wt-yellow;
+      outline-offset: 2px;
+    }
+  }
+
+  &:hover .post-card-title {
+    color: $wt-yellow;
+  }
+
+  &:hover {
+    border-color: $wt-yellow;
+  }
+
+  .post-card-summary {
+    margin: 0 0 0.6rem;
+    font-size: 0.9rem;
+    color: #a8a8a8;
+    word-break: keep-all;
+  }
+
+  .post-meta {
+    margin: 0;
+    font-size: 0.8rem;
+  }
+}
+
+// 사이드바 맨 아래: cmd 첫 화면의 두 줄처럼 기본 글자색으로 (_includes/nav_footer_custom.html)
+.site-footer {
+  font-size: 0.6875rem !important; // 둘째 줄이 사이드바 폭(19rem)에 한 줄로 들어가게 (테마가 !important로 0.75rem을 줘서 같이 씀)
+  color: $body-text-color;
+  word-break: keep-all;
+
+  .footer-line {
+    white-space: nowrap;
+  }
+
+  // 맨 아래 문구 위의 팀 Notion 링크 (원래 오른쪽 위 버튼이던 것)
+  .footer-notion {
+    display: flex; // 혼자 한 줄을 차지하게
+    align-items: center;
+    gap: 0.25rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: $wt-yellow;
+    text-decoration: none;
+
+    svg {
+      width: 0.9rem;
+      height: 0.9rem;
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 // 스크롤바
