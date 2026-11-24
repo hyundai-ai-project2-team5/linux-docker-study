@@ -12,6 +12,7 @@
 | `quiz/회차.md` | 퀴즈 10문항 | 그 회차 주도자 |
 | `index.md` `rules.md` `guide.md` | 일정, 규칙, 쓰는 법 | 팀장 |
 | `_config.yml` `_layouts/` `_includes/` `assets/` | 사이트 설정 | 팀장 (건드리지 않기) |
+| `_sass/` | 윈도우 터미널 테마: 색(`color_schemes/terminal.scss`), 글꼴(`custom/setup.scss`), 꾸미기(`custom/custom.scss`) | 팀장 |
 
 ## 팀 컨벤션 적용
 

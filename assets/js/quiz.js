@@ -13,7 +13,6 @@
 
   Array.prototype.forEach.call(src.children, function (el) {
     var tag = el.tagName;
-    if (tag === 'H1') return; // 페이지 제목은 그대로 두지 않아요
     if (tag === 'H2') {
       var h = el.cloneNode(true);
       Array.prototype.forEach.call(h.querySelectorAll('.anchor-heading'), function (a) {
