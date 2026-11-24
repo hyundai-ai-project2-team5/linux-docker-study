@@ -1,5 +1,5 @@
 title: 리눅스·도커 스터디
-description: 프로젝트 II 팀 · 2026.11.24 ~ 12.22 · 화·목 18:00
+description: 현대 AI Service 개발 2차 팀 5조 · 2026.11.24 ~ 12.22 · 화·목 18:00
 lang: ko-KR
 
 # GitHub Pages가 그대로 빌드해요 (설정 > Pages > Deploy from a branch > main / root)
@@ -7,14 +7,25 @@ remote_theme: just-the-docs/just-the-docs@v0.10.1
 plugins:
   - jekyll-remote-theme
 
+color_scheme: terminal   # 윈도우 터미널 Campbell 색 (_sass/color_schemes/terminal.scss)
+
 search_enabled: true
 heading_anchors: true
 back_to_top: true
 back_to_top_text: "맨 위로"
-footer_content: "리눅스·도커 스터디 · 프로젝트 II 5팀"
+footer_content: "리눅스·도커 스터디 · 현대 AI Service 개발 2차 팀 5조"
 aux_links:
+  "팀 Notion (강의안)":
+    - "https://app.notion.com/p/422d461c2abe80568079d702991e9276"
   "GitHub 저장소":
     - "https://github.com/hyundai-ai-project2-team5/linux-docker-study"
+aux_links_new_tab: true
+
+# 사이드바 맨 아래 바깥 링크
+nav_external_links:
+  - title: 팀 Notion (강의안)
+    url: "https://app.notion.com/p/422d461c2abe80568079d702991e9276"
+    opens_in_new_tab: true
 
 exclude:
   - README.md

@@ -1,0 +1,108 @@
+// 윈도우 터미널처럼 보이게 꾸미기 (색 구성은 _sass/color_schemes/terminal.scss)
+$wt-docker-blue: #2496ed; // 도커 로고 파랑, 검은 바탕 대비 6.2:1
+$wt-comment-green: #6a9955; // VS Code 파이썬 주석색, 검은 바탕 대비 5.9:1
+$wt-gray: #767676; // Campbell brightBlack
+$wt-white: #f2f2f2; // Campbell brightWhite
+
+::selection {
+  color: #0c0c0c;
+  background: $wt-white;
+}
+
+// 위쪽 막대와 사이드바를 터미널 탭 줄처럼
+.main-header,
+.side-bar {
+  background-color: $sidebar-color;
+}
+
+// 사이트 제목: 팀 이름 + 제목, 한글이 중간에서 줄바꿈되지 않게
+.site-title {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.2rem;
+  white-space: nowrap;
+  word-break: keep-all;
+}
+
+.team-name {
+  font-size: 0.75rem;
+  color: $wt-comment-green;
+}
+
+.title-main {
+  font-size: 1.05rem;
+  color: $wt-white;
+}
+
+.title-cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 0.2em;
+  vertical-align: text-bottom;
+  background: $body-text-color;
+  animation: wt-blink 1.06s steps(1) infinite;
+}
+
+@keyframes wt-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .title-cursor {
+    animation: none;
+  }
+}
+
+// 본문 제목은 프롬프트처럼
+.main-content h1::before {
+  content: "$ ";
+  color: $wt-gray;
+}
+
+.main-content h1,
+.main-content h2,
+.main-content h3 {
+  color: $wt-white;
+}
+
+// 인라인 코드
+:not(pre) > code {
+  color: $wt-white;
+  background-color: #1e1e1e;
+  border-color: $border-color;
+}
+
+blockquote {
+  color: #a8a8a8;
+  border-left-color: $wt-gray;
+}
+
+// 도커 관련 강조 (assets/js/terminal.js가 단어에 붙여요, 직접 쓸 때는 <span class="docker">)
+.docker,
+.docker-word,
+code.docker-code,
+.main-content a .docker-word {
+  color: $wt-docker-blue;
+}
+
+// 사이드바의 도커 회차 (3·4주차 = 6~9회차)
+.site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/06.html"],
+.site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/07.html"],
+.site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/08.html"],
+.site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/09.html"] {
+  color: $wt-docker-blue;
+}
+
+.site-footer {
+  color: $wt-gray;
+  word-break: keep-all;
+}
+
+// 스크롤바
+* {
+  scrollbar-color: #3a3a3a $body-background-color;
+}
