@@ -1,0 +1,20 @@
+{%- comment -%}
+  테마(just-the-docs v0.10.1)의 오른쪽 위 링크 버튼을 덮어써요.
+  바뀐 점: 이름 뒤에 바깥 링크 기호(사이드바 바깥 링크와 같은 svg)를 붙였어요. 링크 목록은 _config.yml의 aux_links예요.
+{%- endcomment -%}
+<nav aria-label="Auxiliary" class="aux-nav">
+  <ul class="aux-nav-list">
+    {% for link in site.aux_links %}
+      <li class="aux-nav-list-item">
+        <a href="{{ link.last }}" class="site-button"
+          {% if site.aux_links_new_tab %}
+          target="_blank" rel="noopener noreferrer"
+          {% endif %}
+        >
+          {{ link.first }}
+          <svg viewBox="0 0 24 24" aria-labelledby="svg-external-link-title"><use xlink:href="#svg-external-link"></use></svg>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</nav>

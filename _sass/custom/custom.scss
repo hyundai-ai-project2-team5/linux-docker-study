@@ -119,13 +119,30 @@ code.docker-code,
   word-break: keep-all;
 }
 
-// 사이드바 회차 메뉴의 [N] 뒤 칩 (terminal.js가 붙여요)
-.site-nav .nav-chip {
-  margin: 0 0.35rem 0 0.1rem;
-  padding: 0 0.4rem;
-  font-size: 0.65rem;
-  line-height: 1.5;
-  vertical-align: 0.1em;
+// 사이드바 메뉴 이름 앞에 \를 붙여 폴더 경로처럼 (C:\Linux&Docker\study> 아래 폴더들)
+// \는 메뉴 글자색(회차는 초록·파랑)과 상관없이 흰색
+.site-nav .nav-list-link::before {
+  color: $wt-white;
+  content: "\\";
+}
+
+// 지금 보고 있는 페이지의 메뉴는 회차 색과 상관없이 글자·\ 모두 회색
+.site-nav .nav-list .nav-list-item .nav-list-link.active,
+.site-nav .nav-list .nav-list-item .nav-list-link.active::before,
+.site-nav .nav-list .nav-list-item .nav-list-link.active .linux-word,
+.site-nav .nav-list .nav-list-item .nav-list-link.active .docker-word {
+  color: $wt-gray;
+}
+
+// 오른쪽 위 링크 버튼(팀 GitHub repository)은 노란색, 뒤에 바깥 링크 기호 (_includes/components/aux_nav.html)
+.aux-nav .site-button {
+  color: $wt-yellow;
+}
+
+.aux-nav .site-button svg {
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.25rem;
 }
 
 // 표 안의 한글이 단어 중간에서 줄바꿈되지 않게
@@ -298,6 +315,17 @@ code.docker-code,
   }
 }
 
+// 안내 상자의 퀴즈 링크: 노란색 + 밑줄로 강조 (_layouts/post.html)
+.main-content .post-notice a.post-quiz-link {
+  color: $wt-yellow;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.post-quiz-note {
+  color: $wt-yellow;
+}
+
 .main-content .post-notice-title {
   margin: 0 0 0.4rem;
   font-weight: 700;
@@ -417,6 +445,27 @@ code.docker-code,
 
   .footer-line {
     white-space: nowrap;
+  }
+
+  // 맨 아래 문구 위의 팀 Notion 링크 (원래 오른쪽 위 버튼이던 것)
+  .footer-notion {
+    display: flex; // 혼자 한 줄을 차지하게
+    align-items: center;
+    gap: 0.25rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: $wt-yellow;
+    text-decoration: none;
+
+    svg {
+      width: 0.9rem;
+      height: 0.9rem;
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 

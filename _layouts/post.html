@@ -35,10 +35,10 @@ layout: default
   <aside class="post-notice" aria-label="스터디 안내">
     <p class="post-notice-title">📌 스터디 안내</p>
     <ul>
-      <li><strong>모임</strong> {{ page.day }} 18:00~19:00 · 강의장 라운지 회의실</li>
+      <li><strong>모임</strong> {{ page.day }} 18:00~19:05 · 강의장 라운지 회의실</li>
       <li><strong>실습 짝</strong> {{ page.pair }}</li>
-      <li><strong>퀴즈</strong> <a href="{{ '/quiz/' | append: page.n | append: '.html' | relative_url }}">[{{ page.num }}] 퀴즈</a> (퀴즈 시간 전에는 열지 않기)</li>
-      <li><strong>마감</strong> 정리 글과 질문: 모임 전날 23시 · 이 글과 퀴즈(주도자): 모임 당일 13시 · 질문 답변: 다음 회차 시작 전</li>
+      <li><strong>퀴즈</strong> <a class="post-quiz-link" href="{{ '/quiz/' | append: page.n | append: '.html' | relative_url }}">[{{ page.num }}] 퀴즈</a> <span class="post-quiz-note">(Quiz 시작하면 클릭!)</span></li>
+      <li><strong>마감</strong> 정리 글과 질문: 모임 전날 23시 · 이 글(주도자): 모임 당일 13시 · 퀴즈(주도자): 실습이 끝날 때 PR · 질문 답변: 다음 회차 시작 전</li>
       {%- if page.memo %}
       <li><strong>메모</strong> {{ page.memo }}</li>
       {%- endif %}

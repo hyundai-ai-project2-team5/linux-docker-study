@@ -15,17 +15,9 @@ back_to_top: true
 back_to_top_text: "맨 위로"
 footer_content: "Linux &amp; Docker Study · 현대 AI Service 개발 2차 팀 5조"
 aux_links:
-  "팀 Private Notion":
-    - "https://app.notion.com/p/422d461c2abe80568079d702991e9276"
-  "GitHub 저장소":
+  "팀 GitHub repository":
     - "https://github.com/hyundai-ai-project2-team5/linux-docker-study"
 aux_links_new_tab: true
-
-# 사이드바 맨 아래 바깥 링크
-nav_external_links:
-  - title: 팀 Private Notion
-    url: "https://app.notion.com/p/422d461c2abe80568079d702991e9276"
-    opens_in_new_tab: true
 
 exclude:
   - README.md
