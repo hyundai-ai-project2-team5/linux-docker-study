@@ -1,0 +1,11 @@
+{%- comment -%}
+  테마(just-the-docs v0.10.1)의 위쪽 막대를 덮어써요.
+  바뀐 점: 검색창 자리에 이 페이지를 여는 명령(_includes/cmd_line.html)을 넣었어요. 검색창은 사이드바로 옮겼어요 (components/sidebar.html).
+{%- endcomment -%}
+<div id="main-header" class="main-header">
+  {% include cmd_line.html %}
+  {% include header_custom.html %}
+  {% if site.aux_links %}
+    {% include components/aux_nav.html %}
+  {% endif %}
+</div>

@@ -18,7 +18,7 @@ layout: default
     <div class="post-meta">
       <span class="post-authors">
         {%- for a in page.authors -%}
-        <a class="post-author" href="https://github.com/{{ a }}" target="_blank" rel="noopener noreferrer"><img src="https://github.com/{{ a }}.png?size=48" alt="" width="22" height="22" loading="lazy">{{ a }}</a>
+        <a class="post-author" href="https://github.com/{{ a }}" target="_blank" rel="noopener noreferrer"><img src="https://github.com/{{ a }}.png?size=48" alt="" width="22" height="22" loading="lazy"><span class="post-author-name">{{ a | downcase }}<span class="post-author-host">@linux-docker</span></span></a>
         {%- endfor -%}
       </span>
       <span class="post-date"><span class="post-meta-label">작성</span> {{ page.day }} 13:00</span>
@@ -26,7 +26,7 @@ layout: default
     {%- if page.tags.size > 0 %}
     <ul class="post-tags">
       {%- for t in page.tags %}
-      <li>#{{ t }}</li>
+      <li{% if t contains 'Ubuntu' or t contains '우분투' %} class="ubuntu"{% endif %}>#{{ t }}</li>
       {%- endfor %}
     </ul>
     {%- endif %}
@@ -35,12 +35,19 @@ layout: default
   <aside class="post-notice" aria-label="스터디 안내">
     <p class="post-notice-title">📌 스터디 안내</p>
     <ul>
-      <li><strong>모임</strong> {{ page.day }} 18:00~19:05 · 강의장 라운지 회의실</li>
-      <li><strong>실습 짝</strong> {{ page.pair }}</li>
-      <li id="quiz"><strong>퀴즈</strong> <a class="post-quiz-link" href="{{ '/quiz/' | append: page.n | append: '.html' | relative_url }}">[{{ page.num }}] 퀴즈</a> <span class="post-quiz-note">(Quiz 시작하면 클릭!)</span></li>
-      <li><strong>마감</strong> 정리 글과 질문: 모임 전날 23시 · 이 글(주도자): 모임 당일 13시 · 퀴즈(주도자): 실습이 끝날 때 PR · 질문 답변: 다음 회차 시작 전</li>
+      <li><strong>모임</strong><span class="post-notice-value">{{ page.day }} 18:00~19:05 · 강의장 라운지 회의실</span></li>
+      <li><strong>실습 짝</strong><span class="post-notice-value">{{ page.pair }}</span></li>
+      <li id="quiz"><strong>퀴즈</strong><span class="post-notice-value"><a class="post-quiz-link" href="{{ '/quiz/' | append: page.n | append: '.html' | relative_url }}">[{{ page.num }}] 퀴즈</a> <span class="post-quiz-note">(Quiz 시작하면 클릭!)</span></span></li>
+      <li><strong>마감</strong>
+        <span class="post-notice-value post-deadline-list">
+          <span>멤버 질문</span><span>: 모임 전날 23시</span>
+          <span>이 글(주도자)</span><span>: 모임 당일 13시</span>
+          <span>퀴즈(주도자)</span><span>: 실습이 끝날 때 PR</span>
+          <span>질문 답변</span><span>: 다음 회차 시작 전</span>
+        </span>
+      </li>
       {%- if page.memo %}
-      <li><strong>메모</strong> {{ page.memo }}</li>
+      <li><strong>메모</strong><span class="post-notice-value">{{ page.memo }}</span></li>
       {%- endif %}
     </ul>
   </aside>
@@ -50,7 +57,7 @@ layout: default
   </div>
 
   <section class="post-related">
-    <h2 id="멤버-정리-글과-질문">멤버 정리 글과 질문</h2>
+    <h2 id="멤버-질문">멤버 질문</h2>
     {% include session_notes.html n=page.n %}
   </section>
 

@@ -15,7 +15,7 @@
     <p class="post-meta">
       <span class="post-authors">
         {%- for a in p.authors -%}
-        <span class="post-author"><img src="https://github.com/{{ a }}.png?size=48" alt="" width="20" height="20" loading="lazy">{{ a }}</span>
+        <span class="post-author"><img src="https://github.com/{{ a }}.png?size=48" alt="" width="20" height="20" loading="lazy"><span class="post-author-name">{{ a | downcase }}<span class="post-author-host">@linux-docker</span></span></span>
         {%- endfor -%}
       </span>
       <span class="post-date">{{ p.day }}</span>
