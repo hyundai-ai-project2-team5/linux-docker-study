@@ -1,0 +1,26 @@
+{%- comment -%}
+  테마(just-the-docs v0.10.1)의 사이드바를 덮어써요.
+  바뀐 점: 메뉴(tree) 바로 위에 검색창을 넣었어요. 원래 검색창은 위쪽 막대에 있었어요 (components/header.html).
+{%- endcomment -%}
+
+<div class="side-bar">
+  <div class="site-header" role="banner">
+    <a href="{{ '/' | relative_url }}" class="site-title lh-tight">{% include title.html %}</a>
+    <button id="menu-button" class="site-button btn-reset" aria-label="Toggle menu" aria-pressed="false">
+      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><use xlink:href="#svg-menu"></use></svg>
+    </button>
+  </div>
+
+  {% if site.search_enabled != false %}
+  <div class="sidebar-search">
+    {% include components/search_header.html %}
+  </div>
+  {% endif %}
+
+  {% include_cached components/site_nav.html %}
+
+  {% capture nav_footer_custom %}
+    {%- include nav_footer_custom.html -%}
+  {% endcapture %}
+  {{ nav_footer_custom }}
+</div>

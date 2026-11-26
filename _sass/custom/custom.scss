@@ -1,14 +1,26 @@
-// 윈도우 터미널처럼 보이게 꾸미기 (색 구성은 _sass/color_schemes/terminal.scss)
-$wt-docker-blue: #2986ff; // Docker Desktop 다크 테마 primary(blue 500)
-$wt-linux-green: #16c60c; // Campbell brightGreen, 검은 바탕 대비 8.5:1
-$wt-comment-green: #6a9955; // VS Code 파이썬 주석색, 검은 바탕 대비 5.9:1
-$wt-gray: #767676; // Campbell brightBlack
-$wt-white: #f2f2f2; // Campbell brightWhite
-$wt-yellow: #f9f1a5; // Campbell brightYellow, 회차 글 안내 상자·카드 강조에만 (링크 글자는 흰색)
+// 리눅스 터미널처럼 보이게 꾸미기 (바탕색 구성은 _sass/color_schemes/terminal.scss)
+$docker-blue: #2986ff; // Docker Desktop 다크 테마 primary(blue 500)
+$ubuntu-orange: #e95420; // Ubuntu 브랜드 주황(Ubuntu Orange). Ubuntu에 관한 부분에만 써요
+$ubuntu-aubergine: #300a24; // Ubuntu 터미널 기본 바탕(aubergine 보라). 주황 글자와 대비 5:1
+$term-gray: #9a9996; // 보조 글자 회색, 검은 바탕 대비 6.6:1
+$term-white: #ffffff; // GNOME 터미널 기본 팔레트 bright white
+$term-yellow: #e9ad0c; // GNOME 터미널 기본 팔레트 bright yellow, 회차 글 안내 상자·카드 강조에만 (링크 글자는 흰색)
+$term-cyan: #33c7de; // GNOME 터미널 기본 팔레트 bright cyan, 회차 글 태그
+$prompt-green: #16c60c; // 사이드바 제목·명령 줄의 사용자@호스트 글자 (Ubuntu 기본 프롬프트의 초록)
+$prompt-blue: #3b78ff; // 사이드바 제목·명령 줄의 현재 경로(~) 글자 (Ubuntu 기본 프롬프트의 파랑)
+
+// 넓은 화면의 사이드바 글자 칸: 로고 그림 + 사이드바 제목(hdp2t5@linux-docker:~$, 22글자)의 폭에 맞춰요.
+// 검색창·메뉴(tree)·아래 인사말이 모두 이 칸 왼쪽 끝, 즉 로고 그림의 왼쪽 끝과 같은 x에서 시작해요.
+$title-font-size: 0.9375rem; // 사이드바 제목과 위쪽 막대 명령의 글자 크기 (15px)
+$title-logo-height: 2.75rem; // 로고 그림 높이 (44px)
+$title-logo-width: 2.75rem; // 로고 그림 폭 (44px, 1:1)
+$title-logo-gap: 0.5rem; // 로고 그림과 제목 글자 사이
+$sidebar-column: 2.75rem + 0.5rem + 11.55rem; // 그림 + 틈 + 22글자 × 0.56em(Ubuntu Sans Mono 한 글자 폭) × 0.9375rem
+$sidebar-column-gap: 0.3rem; // 칸 오른쪽 끝과 사이드바 경계선 사이 (제목 $ 뒤 한 칸의 절반)
 
 ::selection {
   color: #0c0c0c;
-  background: $wt-white;
+  background: $term-white;
 }
 
 // 위쪽 막대와 사이드바를 터미널 탭 줄처럼
@@ -17,126 +29,363 @@ $wt-yellow: #f9f1a5; // Campbell brightYellow, 회차 글 안내 상자·카드 
   background-color: $sidebar-color;
 }
 
-// 사이트 제목: 팀 이름 + 제목, 한글이 중간에서 줄바꿈되지 않게
+// 사이드바 제목(로고) 칸은 위쪽 막대와 같은 배경으로 이어지고, 둘 사이 세로선은 없애요
+// 위쪽 막대는 스크롤해도 맨 위에 붙어 있어요 (사이드바는 테마에서 이미 고정)
+@include mq(md) {
+  .main-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  // 목차 링크(#제목)로 이동할 때 제목이 위쪽 막대에 가려지지 않게
+  html {
+    scroll-padding-top: calc(#{$header-height} + 0.5rem);
+  }
+
+  .side-bar {
+    // 넓은 화면의 사이드바 왼쪽 여백까지 로고 칸 높이만큼 위쪽 막대 색을 깔아요
+    background: linear-gradient(to bottom, $body-background-color $header-height, $sidebar-color $header-height);
+  }
+
+  .site-header {
+    position: relative;
+    z-index: 1;
+    margin-right: -1px; // 사이드바 오른쪽 테두리를 로고 칸 높이만큼 덮어요
+    background-color: $body-background-color;
+  }
+}
+
+// 사이트 제목: 한글이 중간에서 줄바꿈되지 않게
+// 링크는 제목 글자에만 걸리고(칸 전체가 아니라), 마우스를 올려도 배경이 바뀌지 않아요
 .site-title {
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 0.2rem;
+  flex-grow: 0;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: $title-logo-gap;
+  height: auto;
+  padding: 0;
+  margin: 0 auto 0 $gutter-spacing-sm;
   white-space: nowrap;
   word-break: keep-all;
+
+  // 넓은 화면: 제목을 로고 칸 오른쪽 끝에 붙여서 바로 옆 위쪽 막대의 명령(cmd_line.html)과 한 줄로 이어지게 해요
+  // 제목 칸 폭은 아래 사이드바 글자 칸($sidebar-column)과 같아서, 제목 첫 글자와 검색창·메뉴·인사말의 시작 x가 같아요
+  @include mq(md) {
+    width: $sidebar-column;
+    padding: 0;
+    margin: 0 calc(#{$sidebar-column-gap} + 1px) 0 auto; // 1px: 로고 칸이 사이드바 경계선을 덮느라 1px 더 넓어서
+  }
+
+  &:hover {
+    background-image: none;
+  }
 }
 
-.team-name {
-  font-size: 0.75rem;
-  white-space: nowrap;
-  color: $wt-comment-green;
+// 로고 그림 (assets/images/logo.png)
+.title-logo {
+  flex: 0 0 auto;
+  width: $title-logo-width;
+  height: $title-logo-height;
 }
 
+// 사이트 제목: hdp2t5@linux-docker:~$ (_includes/title.html)
+// Ubuntu 기본 프롬프트처럼 사용자@호스트는 초록, 현재 경로(~)는 파랑, 나머지(: $)는 흰색
 .title-main {
-  font-size: 1.05rem;
-  color: $wt-white;
+  font-size: $title-font-size;
+  color: $term-white;
 }
 
-.title-cursor {
+.title-user {
+  font-weight: 700;
+  color: $prompt-green;
+}
+
+.title-path {
+  color: $prompt-blue;
+}
+
+// 블록 커서: 위쪽 막대 명령 끝(_includes/cmd_line.html)
+// 기본은 켜진 채로 멈춰 있고, 링크로 처음 들어온 페이지에서만 깜빡여요 (assets/js/terminal.js가 .is-blinking을 붙여요)
+.cmd-cursor {
   display: inline-block;
   width: 0.55em;
   height: 1.05em;
-  margin-left: 0.2em;
+  margin-left: 0.15em;
   vertical-align: text-bottom;
-  background: $body-text-color;
-  animation: wt-blink 1.06s steps(1) infinite;
+  background: $term-white;
 }
 
-@keyframes wt-blink {
+.cmd-cursor.is-blinking {
+  animation: cursor-blink 1.06s steps(1) infinite;
+}
+
+@keyframes cursor-blink {
   50% {
     opacity: 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .title-cursor {
+  .cmd-cursor.is-blinking {
     animation: none;
   }
 }
 
-// 본문 제목은 프롬프트처럼
-.main-content h1::before {
-  content: "$ ";
-  color: $wt-gray;
+// 위쪽 막대의 명령 한 줄: 이 페이지를 여는 명령 (_includes/cmd_line.html)
+// 왼쪽 사이드바 제목(hdp2t5@linux-docker:~$)에 이어지는 명령이라, 제목과 같은 글꼴·크기로 세로 가운데에 둬요
+.main-header .cmd-line {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  min-width: 0;
+  margin: 0;
+  padding: 0 $gutter-spacing-sm;
+  overflow: hidden;
+  font-family: $mono-font-family;
+  font-size: $title-font-size;
+  color: $term-white;
+  white-space: nowrap;
+
+  // 왼쪽 로고 칸의 제목($) 바로 뒤에 한 칸 띄우고 이어서 써요
+  @include mq(md) {
+    padding-left: $sidebar-column-gap;
+  }
+
+  a {
+    color: $term-white;
+    text-decoration: none;
+  }
+}
+
+// 글 목록 페이지(schedule.md)의 '톺아보기' 낱말 풀이: 본문보다 작게
+.main-content .word-note {
+  font-size: 0.8125rem;
 }
 
 .main-content h1,
 .main-content h2,
 .main-content h3 {
-  color: $wt-white;
+  color: $term-white;
+}
+
+// 페이지 맨 위 제목(README 첫 화면, 톺아보기 목록)은 위쪽 막대와의 간격을 왼쪽 여백(사이드바 경계선~글자 32px)과 같게
+// (본문 위 여백 32px + 테마 제목 위 여백 18px + 줄 높이 여백 7px = 57px → 위 여백을 -6px로 줄여 글자 윗선까지 33px)
+.main-content .readme > h1:first-child,
+.main-content main > h1:first-child {
+  margin-top: -0.375rem;
+}
+
+// 회차 글 본문에서 # (h1)을 쓰면 글 제목과 같은 크기(36px)가 되어서, 본문 안에서는 ## 크기로 맞춰요
+.main-content .post-body h1 {
+  @include fs-6;
+
+  font-weight: 500;
+}
+
+// 코드 블록(터미널 창) 기본 글자는 흰색. 문법 강조가 붙은 단어는 강조색을 그대로 써요
+.main-content .highlight,
+.main-content pre.highlight code,
+.main-content pre > code {
+  color: $term-white;
 }
 
 // 인라인 코드
 :not(pre) > code {
-  color: $wt-white;
+  color: $term-white;
   background-color: #1e1e1e;
   border-color: $border-color;
 }
 
 blockquote {
   color: #a8a8a8;
-  border-left-color: $wt-gray;
+  border-left-color: $term-gray;
 }
 
-// 리눅스·도커 관련 강조 (assets/js/terminal.js가 단어에 붙여요, 직접 쓸 때는 <span class="linux"> / <span class="docker">)
-.linux,
-.linux-word,
-.main-content a .linux-word {
-  color: $wt-linux-green;
+// 색 규칙 (assets/js/terminal.js가 단어에 붙여요)
+// - 리눅스: 운영체제라 대표색이 없어요. 따로 색을 칠하지 않고 흰색 그대로예요.
+// - Ubuntu(리눅스 배포판): Ubuntu에 관한 단어에만 Ubuntu 주황 글자 + Ubuntu 터미널 보라 바탕 (직접 쓸 때 <span class="ubuntu">)
+// - Docker: 도커 핵심 단어와 docker 명령에만 파란색 (직접 쓸 때 <span class="docker">)
+.ubuntu,
+.ubuntu-word,
+.main-content a .ubuntu-word {
+  padding: 0 0.2em;
+  color: $ubuntu-orange;
+  background: $ubuntu-aubergine;
+  border-radius: 3px;
 }
 
 .docker,
 .docker-word,
 code.docker-code,
 .main-content a .docker-word {
-  color: $wt-docker-blue;
+  color: $docker-blue;
 }
 
-// 사이드바 회차 메뉴: 리눅스(0~2주차 = 1~5회차)는 초록, 도커(3·4주차 = 6~9회차)는 파랑
-.site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/01.html"],
-.site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/02.html"],
-.site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/03.html"],
-.site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/04.html"],
-.site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/05.html"] {
-  color: $wt-linux-green;
+// 사이드바 메뉴는 모두 흰색. 도커 핵심 단어만 파란색이에요 (회차 전체를 칠하지 않아요)
+// (하위 메뉴는 테마가 회색을 줘서 같은 깊이의 선택자로 덮어써요)
+.site-nav .nav-list .nav-list-item .nav-list-link,
+.site-nav .nav-list .nav-list-item .nav-list .nav-list-item .nav-list-link {
+  color: $term-white;
+  word-break: keep-all; // 한글이 단어 중간에서 줄바꿈되지 않게
 }
 
-.site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/06.html"],
-.site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/07.html"],
-.site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/08.html"],
-.site-nav .nav-list .nav-list-item .nav-list-link[href$="sessions/09.html"] {
-  color: $wt-docker-blue;
+// 사이드바 검색창: 메뉴(tree) 바로 위, 사이드바 글자 칸($sidebar-column)과 같은 위치·폭 (_includes/components/sidebar.html)
+// 모바일에서는 메뉴 버튼을 눌러 메뉴가 열릴 때만 보여요
+.sidebar-search {
+  display: none;
+  width: 100%;
+  padding: 0.5rem $gutter-spacing-sm 0;
+
+  @include mq(md) {
+    display: block;
+    width: $sidebar-column;
+    padding: 1rem 0 0;
+    margin-right: $sidebar-column-gap;
+  }
 }
 
-// 사이드바 메뉴의 한글이 단어 중간에서 줄바꿈되지 않게
-.site-nav .nav-list-link {
-  word-break: keep-all;
+.side-bar:has(.site-nav.nav-open) .sidebar-search {
+  display: block;
 }
 
-// 사이드바 메뉴 이름 앞에 \를 붙여 폴더 경로처럼 (C:\Linux&Docker\study> 아래 폴더들)
-// \는 메뉴 글자색(회차는 초록·파랑)과 상관없이 흰색
+@include mq(md) {
+  .sidebar-search .search {
+    height: auto !important;
+  }
+
+  .sidebar-search .search-input-wrap,
+  .search-active .sidebar-search .search-input-wrap {
+    position: relative;
+    width: 100%;
+    max-width: none;
+    height: 2rem !important;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    box-shadow: none;
+  }
+
+  // 입력한 글자는 아래 메뉴 글자(README.md)와 같은 x에서 시작하고, 돋보기는 tree 가지 기호(├──) 자리에 와요
+  // 메뉴와 같은 글자 크기라서 가지 기호 "├── " 폭만큼 띄우면 돼요
+  // (├·─는 D2Coding 반각 0.5em × 3, 공백은 Ubuntu Sans Mono 1ch, 1px은 테두리)
+  .sidebar-search .search-input,
+  .search-active .sidebar-search .search-input {
+    padding: 0 0.6rem 0 calc(1.5em + 1ch - 1px);
+    font-size: 0.75rem;
+  }
+
+  .sidebar-search .search-label,
+  .search-active .sidebar-search .search-label {
+    padding-left: 0.375rem;
+  }
+
+  .sidebar-search .search-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
+  // 검색 결과는 검색창 아래로 본문 위에 겹쳐 펼쳐요
+  .sidebar-search .search-results {
+    top: calc(100% + 0.25rem);
+    max-height: calc(100vh - 10rem) !important;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+  }
+
+  .search-active .side-bar {
+    z-index: 101;
+  }
+}
+
+// 사이드바는 홈 디렉터리(~)에서 tree 명령을 친 결과처럼 보여요
+//   .
+//   ├── Info.
+//   ├── 팀 Study Rule
+//   └── Linux와 Docker 톺아보기
+//       ├── [1].리눅스 환경과 셸
+//       └── [9].Compose와 네트워크
+// 가지 기호는 메뉴 글자색과 상관없이 회색이고, 공백을 그대로 살려(pre) 칸을 맞춰요.
+.site-nav > .nav-list:first-child::before {
+  display: block;
+  padding-left: $gutter-spacing-sm;
+  font-family: $mono-font-family;
+  color: $term-gray;
+  content: ".";
+
+  @include mq(md) {
+    padding-left: $gutter-spacing;
+  }
+}
+
+.site-nav .nav-list .nav-list-item > .nav-list {
+  padding-left: 0; // 들여쓰기는 테마 대신 가지 기호(│   )로
+}
+
+.site-nav .nav-list .nav-list-item .nav-list-link {
+  white-space: nowrap;
+}
+
 .site-nav .nav-list-link::before {
-  color: $wt-white;
-  content: "\\";
+  font-family: $mono-font-family;
+  color: $term-gray;
+  white-space: pre;
+  content: "├── ";
 }
 
-// 지금 보고 있는 페이지의 메뉴는 회차 색과 상관없이 글자·\ 모두 회색
+.site-nav .nav-list-item:last-child > .nav-list-link::before {
+  content: "└── ";
+}
+
+// 하위 메뉴: 상위 메뉴가 마지막이 아니면 "│   ", 마지막이면 빈칸 "    "을 앞에 붙여요
+.site-nav .nav-list .nav-list-item .nav-list .nav-list-item .nav-list-link::before {
+  content: "│   ├── ";
+}
+
+.site-nav .nav-list .nav-list-item .nav-list .nav-list-item:last-child .nav-list-link::before {
+  content: "│   └── ";
+}
+
+.site-nav .nav-list .nav-list-item:last-child .nav-list .nav-list-item .nav-list-link::before {
+  content: "    ├── ";
+}
+
+.site-nav
+  .nav-list
+  .nav-list-item:last-child
+  .nav-list
+  .nav-list-item:last-child
+  .nav-list-link::before {
+  content: "    └── ";
+}
+
+// 지금 보고 있는 페이지의 메뉴는 글자·가지 기호·강조 단어 모두 회색
 .site-nav .nav-list .nav-list-item .nav-list-link.active,
 .site-nav .nav-list .nav-list-item .nav-list-link.active::before,
-.site-nav .nav-list .nav-list-item .nav-list-link.active .linux-word,
-.site-nav .nav-list .nav-list-item .nav-list-link.active .docker-word {
-  color: $wt-gray;
+.site-nav .nav-list .nav-list-item .nav-list-link.active .ubuntu-word,
+.site-nav .nav-list .nav-list-item .nav-list-link.active .docker-word,
+.site-nav .nav-list .nav-list-item .nav-list .nav-list-item .nav-list-link.active,
+.site-nav .nav-list .nav-list-item .nav-list .nav-list-item .nav-list-link.active::before,
+.site-nav .nav-list .nav-list-item .nav-list .nav-list-item .nav-list-link.active .docker-word {
+  color: $term-gray;
+  background: none;
 }
 
 // 오른쪽 위 링크 버튼(팀 GitHub repository)은 노란색, 뒤에 바깥 링크 기호 (_includes/components/aux_nav.html)
+// 위쪽 막대의 명령이 길어도 버튼 글자가 두 줄로 접히지 않게 (긴 명령은 오른쪽이 잘려요)
+.aux-nav {
+  flex-shrink: 0;
+}
+
 .aux-nav .site-button {
-  color: $wt-yellow;
+  color: $term-yellow;
+  white-space: nowrap;
+}
+
+// 마우스를 올리면 배경 대신 밑줄 (사이드바 아래 팀 Notion 링크와 같게)
+.aux-nav .site-button:hover {
+  text-decoration: underline;
+  background-image: none;
 }
 
 .aux-nav .site-button svg {
@@ -150,26 +399,47 @@ code.docker-code,
   word-break: keep-all;
 }
 
-// 홈 일정표: 회차 열은 숫자 한 글자라 좁게 (index.md 표 아래 {: .session-table})
-.main-content table.session-table th:first-child,
-.main-content table.session-table td:first-child {
-  width: 1%;
-  min-width: 0;
-  padding-right: 0.25rem;
-  padding-left: 0.25rem;
-  text-align: center;
-  white-space: nowrap;
+// 첫 화면(index.md)은 README.md를 그대로 보여 줘요. README 맨 위의 "스터디 사이트" 링크 줄은 이 사이트 자신이라 숨겨요
+.readme > blockquote:first-of-type {
+  display: none;
 }
 
-// 홈 일정표: 날짜는 가운데, 범위는 한 줄로
-.main-content table.session-table th:nth-child(2),
-.main-content table.session-table td:nth-child(2) {
-  text-align: center;
-  white-space: nowrap;
+// 홈(README) 표는 순서가 바뀌어도 맞도록 표 안의 내용으로 골라요
+// 일정표(회차 페이지 링크가 있는 표): 회차 열은 숫자 한 글자라 좁게, 날짜는 가운데, 범위는 한 줄로
+.readme table:has(a[href*="sessions/01.html"]) {
+  th:first-child,
+  td:first-child {
+    width: 1%;
+    min-width: 0;
+    padding-right: 0.25rem;
+    padding-left: 0.25rem;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  th:nth-child(2),
+  td:nth-child(2) {
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  td:nth-child(3) {
+    white-space: nowrap;
+  }
 }
 
-.main-content table.session-table td:nth-child(3) {
-  white-space: nowrap;
+// 팀원 표(프로필 사진이 있는 표): 여섯 칸을 같은 폭으로
+.readme table:has(img[src*="github.com"]) {
+  width: 100%;
+  table-layout: fixed;
+
+  th,
+  td {
+    min-width: 0;
+    padding-right: 0.25rem;
+    padding-left: 0.25rem;
+    overflow-wrap: anywhere;
+  }
 }
 
 // 사이드바 하위 메뉴(회차별 자료)를 접지 않고 항상 펼쳐 두기
@@ -198,18 +468,19 @@ code.docker-code,
   border-radius: 999px;
 }
 
+// Linux 칩은 운영체제라 흰색, Docker 칩만 파란색
 .post-chip-linux {
-  color: $wt-linux-green;
-  border-color: rgba($wt-linux-green, 0.5);
+  color: $term-white;
+  border-color: rgba($term-white, 0.5);
 }
 
 .post-chip-docker {
-  color: $wt-docker-blue;
-  border-color: rgba($wt-docker-blue, 0.5);
+  color: $docker-blue;
+  border-color: rgba($docker-blue, 0.5);
 }
 
 .post-no {
-  color: $wt-gray;
+  color: $term-gray;
 }
 
 .main-content .post-title {
@@ -247,13 +518,18 @@ code.docker-code,
   text-decoration: none;
 }
 
+// 작성자 이름은 리눅스 프롬프트의 사용자@호스트처럼 (소문자 아이디@linux-docker), 호스트 부분은 회색
+.post-author-host {
+  color: $term-gray;
+}
+
 .post-author img {
   border: 1px solid $border-color;
   border-radius: 50%;
 }
 
 .post-meta-label {
-  color: $wt-gray;
+  color: $term-gray;
 }
 
 .main-content ul.post-tags {
@@ -268,12 +544,18 @@ code.docker-code,
     margin: 0;
     padding: 0.05rem 0.5rem;
     font-size: 0.8rem;
-    color: #61d6d6; // Campbell brightCyan
+    color: $term-cyan;
     background: #161616;
     border-radius: 4px;
 
     &::before {
       content: none;
+    }
+
+    // Ubuntu 태그만 Ubuntu 주황 글자 + 보라 바탕
+    &.ubuntu {
+      color: $ubuntu-orange;
+      background: $ubuntu-aubergine;
     }
   }
 }
@@ -290,7 +572,7 @@ code.docker-code,
   font-size: 0.9rem;
   background: #121212;
   border: 1px solid $border-color;
-  border-left: 3px solid $wt-yellow;
+  border-left: 3px solid $term-yellow;
   border-radius: 4px;
 
   ul {
@@ -299,7 +581,11 @@ code.docker-code,
     list-style: none;
   }
 
+  // 항목마다 [이름 칸 | 값 칸] 두 칸이라 값이 모두 같은 x 좌표에서 시작해요
   li {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr;
+    align-items: baseline;
     margin: 0.2rem 0;
     word-break: keep-all;
 
@@ -309,27 +595,32 @@ code.docker-code,
   }
 
   strong {
-    display: inline-block;
-    min-width: 4.5rem;
-    color: $wt-white;
+    color: $term-white;
+  }
+
+  // 마감: 항목마다 한 줄씩, ":"가 모두 같은 x 좌표에 오도록 [항목 | : 시각] 두 칸
+  .post-deadline-list {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.15rem 0;
   }
 }
 
 // 안내 상자의 퀴즈 링크: 노란색 + 밑줄로 강조 (_layouts/post.html)
 .main-content .post-notice a.post-quiz-link {
-  color: $wt-yellow;
+  color: $term-yellow;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
 .post-quiz-note {
-  color: $wt-yellow;
+  color: $term-yellow;
 }
 
 .main-content .post-notice-title {
   margin: 0 0 0.4rem;
   font-weight: 700;
-  color: $wt-yellow;
+  color: $term-yellow;
 }
 
 .post-related {
@@ -354,14 +645,14 @@ code.docker-code,
     border-radius: 6px;
 
     &:hover {
-      border-color: $wt-yellow;
+      border-color: $term-yellow;
     }
 
     .post-pager-label {
       display: block;
       margin-bottom: 0.2rem;
       font-size: 0.75rem;
-      color: $wt-gray;
+      color: $term-gray;
     }
   }
 
@@ -394,7 +685,7 @@ code.docker-code,
     margin-bottom: 0.3rem;
     font-size: 1.1rem;
     font-weight: 700;
-    color: $wt-white;
+    color: $term-white;
     text-decoration: none;
     word-break: keep-all;
 
@@ -411,17 +702,17 @@ code.docker-code,
     }
 
     &:focus-visible::after {
-      outline: 2px solid $wt-yellow;
+      outline: 2px solid $term-yellow;
       outline-offset: 2px;
     }
   }
 
   &:hover .post-card-title {
-    color: $wt-yellow;
+    color: $term-yellow;
   }
 
   &:hover {
-    border-color: $wt-yellow;
+    border-color: $term-yellow;
   }
 
   .post-card-summary {
@@ -437,30 +728,47 @@ code.docker-code,
   }
 }
 
-// 사이드바 맨 아래: cmd 첫 화면의 두 줄처럼 기본 글자색으로 (_includes/nav_footer_custom.html)
+// 사이드바 맨 아래: Ubuntu 로그인 인사말(MOTD)처럼 기본 글자색으로 (_includes/nav_footer_custom.html)
 .site-footer {
-  font-size: 0.6875rem !important; // 둘째 줄이 사이드바 폭(19rem)에 한 줄로 들어가게 (테마가 !important로 0.75rem을 줘서 같이 씀)
+  font-size: 0.6875rem !important; // 사이드바 폭(19rem)에 맞게 (테마가 !important로 0.75rem을 줘서 같이 씀)
   color: $body-text-color;
   word-break: keep-all;
 
-  .footer-line {
-    white-space: nowrap;
+  .motd-welcome {
+    margin: 0 0 0.5rem;
+    color: $term-white;
   }
 
-  // 맨 아래 문구 위의 팀 Notion 링크 (원래 오른쪽 위 버튼이던 것)
+  // * 목록 (MOTD의 * Documentation: 줄처럼)
+  .motd-list {
+    margin: 0 0 0.6rem;
+    padding: 0;
+    list-style: none;
+
+    li {
+      margin: 0.15rem 0;
+      padding-left: 0;
+
+      &::before {
+        content: none !important;
+      }
+    }
+  }
+
+  // 팀 Notion 링크
+  // 크기는 오른쪽 위 "팀 GitHub repository" 버튼(테마 aux-nav의 fs-2)과 같게
   .footer-notion {
-    display: flex; // 혼자 한 줄을 차지하게
+    display: inline-flex;
     align-items: center;
     gap: 0.25rem;
-    margin-bottom: 0.6rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: $wt-yellow;
+    font-weight: 400;
+    @include fs-2;
+    color: $term-yellow;
     text-decoration: none;
 
     svg {
-      width: 0.9rem;
-      height: 0.9rem;
+      width: 1rem;
+      height: 1rem;
     }
 
     &:hover {
@@ -472,4 +780,38 @@ code.docker-code,
 // 스크롤바
 * {
   scrollbar-color: #3a3a3a $body-background-color;
+}
+
+// ── 넓은 화면의 사이드바 글자 칸 ──
+// 메뉴(tree)와 아래 인사말을 사이드바 제목 폭($sidebar-column) 안에 넣어서,
+// 제목 첫 글자·검색창·tree의 "."·인사말 첫 글자가 같은 x에서 시작해요.
+// 칸에 들어가도록 메뉴는 12px, 인사말은 9.6px로 줄였어요.
+@include mq(md) {
+  .site-nav {
+    width: $sidebar-column;
+    padding-top: 0.75rem; // 검색창과 tree 사이 (테마 기본 2rem)
+    margin-right: $sidebar-column-gap;
+  }
+
+  .site-nav > .nav-list:first-child::before {
+    padding-left: 0;
+  }
+
+  .site-nav .nav-list .nav-list-item {
+    font-size: 0.75rem !important;
+  }
+
+  .site-nav .nav-list .nav-list-item .nav-list-link,
+  .site-nav .nav-list .nav-list-item .nav-list .nav-list-item .nav-list-link {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .site-footer {
+    width: $sidebar-column;
+    padding-right: 0;
+    padding-left: 0;
+    margin-right: $sidebar-column-gap;
+    font-size: 0.6rem !important;
+  }
 }

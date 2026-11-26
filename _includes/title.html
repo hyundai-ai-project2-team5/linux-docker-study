@@ -1,1 +1,7 @@
-<span class="title-main">C:\Linux&amp;Docker\study&gt;{% if page.url == "/" %}<span class="title-cursor" aria-hidden="true"></span>{% endif %}</span>
+{%- comment -%}
+  사이드바 왼쪽 위 사이트 제목: 리눅스 셸 프롬프트(사용자@호스트:현재경로$) 모양이에요.
+  사용자 이름은 소문자(Ubuntu adduser 기본 규칙), 호스트 이름은 영문 소문자·숫자·하이픈만 써요. 로그인하면 홈 디렉터리(~)에서 시작해요.
+  제목 앞의 그림은 팀 로고예요 (assets/images/logo.png). 원본 그림에서 펭귄·고래·컨테이너만 남겨 1:1로 맞추고, > 는 왼쪽 컨테이너 옆으로 옮겨 그 컨테이너 윗변을 굵게 해서 _ 로 썼어요. 검은 바탕은 투명하게 했어요.
+  제목 바로 오른쪽 위쪽 막대에 이 페이지를 여는 명령이 이어져요 (_includes/cmd_line.html). 커서는 그 명령 끝에 있어요.
+{%- endcomment -%}
+<img class="title-logo" src="{{ '/assets/images/logo.png' | relative_url }}" alt="" width="44" height="44"><span class="title-main"><span class="title-user">hdp2t5@linux-docker</span>:<span class="title-path">~</span>$</span>

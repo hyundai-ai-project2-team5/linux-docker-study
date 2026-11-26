@@ -1,17 +1,18 @@
-// 윈도우 터미널 기본 색 구성 Campbell (Windows Terminal defaults.json 기준)
-// background #0C0C0C, foreground #CCCCCC, brightWhite #F2F2F2, brightBlack #767676,
-// brightYellow #F9F1A5, blue #0037DA (링크 글자는 brightWhite, 노랑은 custom.scss의 $wt-yellow로 강조에만 써요)
+// 리눅스 터미널 색 구성
+// - 글자색: GNOME 터미널 기본 팔레트 (white #D0CFCC, bright white #FFFFFF)
+// - 바탕: 무채색 검정 (보라 바탕은 Ubuntu에 관한 부분에만 쓰는 규칙이라 바탕에는 쓰지 않아요)
+// - 파란색은 도커 핵심 단어에만 써서, 버튼 색도 무채색으로 둬요
 $color-scheme: dark;
 $body-background-color: #0c0c0c;
 $sidebar-color: #1a1a1a;
-$body-heading-color: #f2f2f2;
-$body-text-color: #cccccc;
-$link-color: #f2f2f2;
-$nav-child-link-color: #a8a8a8;
+$body-heading-color: #ffffff;
+$body-text-color: #d0cfcc;
+$link-color: #ffffff;
+$nav-child-link-color: #d0cfcc;
 $base-button-color: #262626;
-$btn-primary-color: #0037da;
+$btn-primary-color: #3a3a3a;
 $code-background-color: #161616;
-$code-linenumber-color: #767676;
+$code-linenumber-color: #9a9996;
 $feedback-color: #262626;
 $table-background-color: #121212;
 $search-background-color: #0c0c0c;

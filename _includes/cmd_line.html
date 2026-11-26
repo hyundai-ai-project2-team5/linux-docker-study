@@ -1,0 +1,24 @@
+{%- comment -%}
+  위쪽 막대(검색창이 있던 자리)에 "이 페이지를 여는 리눅스 명령"을 보여 줘요 (components/header.html에서 불러요).
+  프롬프트(hdp2t5@linux-docker:~$)는 바로 왼쪽 사이드바 제목과 겹쳐서 빼고, 명령만 써요.
+  그래서 사이드바 제목과 이 명령이 이어져 한 줄의 프롬프트처럼 보여요.
+  - 홈: cat README.md (첫 화면이 저장소의 README.md예요)
+  - 하위 글이 있는 메뉴(has_children): ls -al '메뉴 이름' (폴더 내용 보기)
+  - 나머지 글: cat '상위 메뉴/글 이름' (파일 내용 보기). 상위 메뉴 이름은 그 페이지로 가는 링크예요.
+  - 멤버 질문 글(notes/): cat 'notes/회차/아이디.md' (글 제목 대신 저장소 안의 실제 파일 경로)
+  명령 끝에 블록 커서가 있어요. 링크로 처음 들어온 페이지에서만 깜빡여요 (assets/js/terminal.js).
+{%- endcomment -%}
+{%- assign cmd_name = page.title | default: page.path -%}
+{%- assign path_head = page.path | slice: 0, 6 -%}
+{%- if path_head == 'notes/' -%}{%- assign cmd_name = page.path -%}{%- endif -%}
+{%- if page.parent -%}
+  {%- assign parent_page = site.pages | where: "title", page.parent | first -%}
+{%- endif -%}
+<p class="cmd-line">
+  {%- if page.url == '/' %}cat README.md
+  {%- elsif page.has_children %}ls -al '{{ cmd_name | escape }}'
+  {%- elsif parent_page %}cat '<a href="{{ parent_page.url | relative_url }}">{{ page.parent | escape }}</a>/{{ cmd_name | escape }}'
+  {%- else %}cat '{{ cmd_name | escape }}'
+  {%- endif -%}
+  <span class="cmd-cursor" aria-hidden="true"></span>
+</p>

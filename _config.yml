@@ -11,8 +11,7 @@ color_scheme: terminal   # 윈도우 터미널 Campbell 색 (_sass/color_schemes
 
 search_enabled: true
 heading_anchors: true
-back_to_top: true
-back_to_top_text: "맨 위로"
+back_to_top: false # 페이지 맨 아래 "맨 위로" 링크를 쓰지 않아요
 footer_content: "Linux &amp; Docker Study · 현대 AI Service 개발 2차 팀 5조"
 aux_links:
   "팀 GitHub repository":
